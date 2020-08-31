@@ -7,7 +7,7 @@ pub mod controller;
 pub use controller::*;
 pub mod manager;
 pub use manager::*;
-pub mod runnerdirect;
+pub mod runner;
 
 #[async_trait]
 pub trait ServiceTask {

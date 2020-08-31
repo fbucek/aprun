@@ -13,7 +13,7 @@ pub enum RunnerEvent {
 }
 
 /// Control used to control ServiceRunnerDirect -> running in separate thread
-pub struct RunnerControllerDirect {
+pub struct RunnerController {
     pub runner: Arc<ServiceRunnerDirect>,
 }
 
@@ -76,10 +76,10 @@ impl ServiceRunnerDirect {
 }
 
 /// Control is controlling ServiceRunnerDirect
-impl RunnerControllerDirect {
+impl RunnerController {
     pub fn new(runner: &Arc<ServiceRunnerDirect>) -> Arc<Mutex<Self>> {
         // must be in Arc because it is shared amog http actix threads
-        Arc::new(Mutex::new(RunnerControllerDirect {
+        Arc::new(Mutex::new(RunnerController {
             runner: runner.clone(),
         }))
     }
