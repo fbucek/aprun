@@ -1,6 +1,11 @@
 #.PHONY: doc
 
-all: clean test build doc
+all: clean check test build doc
+
+check:
+	cargo check
+	cargo clippy
+	cargo fmt
 
 test: 
 	cargo test

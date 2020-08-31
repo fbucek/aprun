@@ -1,7 +1,7 @@
 //! Async parallel runner
-//! 
+//!
 //! ### Reason
-//! 
+//!
 //! - Run multiple jobs in prallel
 //! - Controlled by server ( example with actix )
 
@@ -13,10 +13,9 @@ pub mod manager;
 pub mod runner;
 
 // Reexports
-pub use manager::ServiceManager;
 pub use controller::ServiceController;
-pub use runner::{RunnerEvent, RunnerController, ServiceRunner};
-
+pub use manager::ServiceManager;
+pub use runner::{RunnerController, RunnerEvent, ServiceRunner};
 
 #[async_trait]
 pub trait ServiceTask {

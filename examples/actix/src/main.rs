@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, HttpResponse, App, HttpServer};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer};
 
 // Sync
 use std::sync::Arc;
@@ -6,7 +6,7 @@ use tokio::sync::Mutex;
 // Error handling
 use color_eyre::Result;
 // Log handling
-use tracing::{info,trace};
+use tracing::{info, trace};
 
 #[actix_rt::main]
 async fn main() -> Result<()> {
@@ -16,21 +16,26 @@ async fn main() -> Result<()> {
     // Load .env file
     //dotenv::dotenv().ok();
     tracing_subscriber::fmt()
-        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env()) // load env RUST_LOG 
-    .init();
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env()) // load env RUST_LOG
+        .init();
 
     let host = "localhost";
     let port = "8000";
 
     info!("Starting server at http://{}:{}/", &host, &port);
-    info!("API: 'curl -X POST http://{}:{}/api/v1/service/start'", &host, &port);
-    info!("API: 'curl -X POST http://{}:{}/api/v1/service/stop'", &host, &port);
+    info!(
+        "API: 'curl -X POST http://{}:{}/api/v1/service/start'",
+        &host, &port
+    );
+    info!(
+        "API: 'curl -X POST http://{}:{}/api/v1/service/stop'",
+        &host, &port
+    );
 
     // Async parallel runner
 
     let service_manager = aprun::ServiceManager::default();
-    let runner =
-        aprun::ServiceRunner::new(Arc::new(Mutex::new(service_manager)));
+    let runner = aprun::ServiceRunner::new(Arc::new(Mutex::new(service_manager)));
     let control = aprun::RunnerController::new(&runner);
     let control_stop = control.clone();
 
@@ -50,7 +55,6 @@ async fn main() -> Result<()> {
 
     Ok(())
 }
-
 
 #[post("/stop")]
 pub async fn stop(
@@ -72,9 +76,7 @@ pub async fn start(
     Ok(HttpResponse::Ok().body("control started"))
 }
 
-
 #[get("/health")]
 async fn health() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
-
