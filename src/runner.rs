@@ -12,13 +12,13 @@ pub enum RunnerEvent {
     Stop,
 }
 
-/// Control used to control ServiceRunnerDirect -> running in separate thread
+/// Control used to control ServiceRunner -> running in separate thread
 pub struct RunnerController {
-    pub runner: Arc<ServiceRunnerDirect>,
+    pub runner: Arc<ServiceRunner>,
 }
 
-/// ServiceRunnerDirect is running in thread and is accessible from Actix server using Control
-pub struct ServiceRunnerDirect {
+/// ServiceRunner is running in thread and is accessible from Actix server using Control
+pub struct ServiceRunner {
     /// wait time between checks ( usually one minute )
     pub wait_time: AtomicU64,
     pub stop: AtomicBool,
@@ -26,9 +26,9 @@ pub struct ServiceRunnerDirect {
     pub service_manager: Arc<Mutex<ServiceManager>>,
 }
 
-impl ServiceRunnerDirect {
+impl ServiceRunner {
     pub fn new(service_manager: Arc<Mutex<ServiceManager>>) -> Arc<Self> {
-        Arc::new(ServiceRunnerDirect {
+        Arc::new(ServiceRunner {
             wait_time: AtomicU64::new(1000),
             stop: AtomicBool::new(false),
             running: AtomicBool::new(false),
@@ -49,7 +49,7 @@ impl ServiceRunnerDirect {
 
         loop {
             if self.stop.load(Ordering::Relaxed) {
-                info!("Control: ServiceRunnerDirect stop");
+                info!("Control: ServiceRunner stop");
                 self.running.swap(false, Ordering::Relaxed);
                 break;
             }
@@ -75,9 +75,9 @@ impl ServiceRunnerDirect {
     }
 }
 
-/// Control is controlling ServiceRunnerDirect
+/// Control is controlling ServiceRunner
 impl RunnerController {
-    pub fn new(runner: &Arc<ServiceRunnerDirect>) -> Arc<Mutex<Self>> {
+    pub fn new(runner: &Arc<ServiceRunner>) -> Arc<Mutex<Self>> {
         // must be in Arc because it is shared amog http actix threads
         Arc::new(Mutex::new(RunnerController {
             runner: runner.clone(),
@@ -86,7 +86,7 @@ impl RunnerController {
 
     pub async fn run(&self) {
         if self.runner.running.load(Ordering::Relaxed) {
-            warn!("ServiceRunnerDirect alread running");
+            warn!("ServiceRunner alread running");
         } else {
             self.runner.stop.swap(false, Ordering::Relaxed);
             self.runner.running.swap(true, Ordering::Relaxed);
@@ -94,7 +94,7 @@ impl RunnerController {
             // Process each socket concurrently.
             tokio::spawn(async move { runner.start().await });
 
-            info!("ServiceRunnerDirect started");
+            info!("ServiceRunner started");
         }
     }
 
