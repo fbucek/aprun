@@ -1,0 +1,34 @@
+name: build
+
+on: [push]
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    # Needed because of: migrations_macros v1.4.2
+    # note: /usr/bin/ld: cannot find -lsqlite3
+    - name: Install sqlite
+      run: sudo apt-get install libsqlite3-dev
+    - uses: actions/checkout@v2
+
+    - run: cargo build
+    - run: cargo test
+
+  macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: cargo build 
+    - name: Run tests
+      run: cargo test
+
+  windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: cargo build 
+    - name: Run tests
+      run: cargo test -- --nocapture
