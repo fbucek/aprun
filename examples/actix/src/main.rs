@@ -28,10 +28,10 @@ async fn main() -> Result<()> {
 
     // Async parallel runner
 
-    let service_manager = aprun::manager::ServiceManager::default();
+    let service_manager = aprun::ServiceManager::default();
     let runner =
-        aprun::runner::ServiceRunner::new(Arc::new(Mutex::new(service_manager)));
-    let control = aprun::runner::RunnerController::new(&runner);
+        aprun::ServiceRunner::new(Arc::new(Mutex::new(service_manager)));
+    let control = aprun::RunnerController::new(&runner);
     let control_stop = control.clone();
 
     HttpServer::new(move || {
@@ -54,7 +54,7 @@ async fn main() -> Result<()> {
 
 #[post("/stop")]
 pub async fn stop(
-    control: web::Data<Arc<Mutex<aprun::runner::RunnerController>>>,
+    control: web::Data<Arc<Mutex<aprun::RunnerController>>>,
 ) -> Result<actix_http::Response, actix_web::Error> {
     let control = control.lock().await;
     trace!("Stopping runner");
@@ -64,7 +64,7 @@ pub async fn stop(
 
 #[post("/start")]
 pub async fn start(
-    control: web::Data<Arc<Mutex<aprun::runner::RunnerController>>>,
+    control: web::Data<Arc<Mutex<aprun::RunnerController>>>,
 ) -> Result<actix_http::Response, actix_web::Error> {
     let control = control.lock().await;
     trace!("Starting runner");

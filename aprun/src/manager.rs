@@ -3,7 +3,7 @@ use tracing::*;
 
 use crate::ServiceTask;
 
-/// Contains information about hosts to check
+/// Manager handle ServiceTasks
 #[derive(Default)]
 pub struct ServiceManager {
     pub service_tasks: HashMap<String, Box<dyn ServiceTask + Send>>,

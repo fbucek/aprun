@@ -1,13 +1,22 @@
-//! Service module
+//! Async parallel runner
+//! 
+//! ### Reason
+//! 
+//! - Run multiple jobs in prallel
+//! - Controlled by server ( example with actix )
 
 use async_trait::async_trait;
 use std::time::SystemTime;
 
 pub mod controller;
-pub use controller::*;
 pub mod manager;
-pub use manager::*;
 pub mod runner;
+
+// Reexports
+pub use manager::ServiceManager;
+pub use controller::ServiceController;
+pub use runner::{RunnerEvent, RunnerController, ServiceRunner};
+
 
 #[async_trait]
 pub trait ServiceTask {

@@ -18,4 +18,4 @@ actix-http = "1.0"
 tokio = { version = "0.2", features= ["rt-threaded",  "sync"] }
 
 # Jobs runner handling
-aprun = "0.1"
+aprun = { version = "0.1", path = "../../aprun" }
