@@ -1,0 +1,18 @@
+[package]
+name = "actix-example"
+version = "0.1.0"
+authors = ["Filip Bucek <fbucek@invloop.cz>"]
+edition = "2018"
+
+[dependencies]
+# Error and logging
+color-eyre = "0.5"
+tracing = "0.1"
+tracing-subscriber = "0.2"
+
+# Http
+actix-web = "2"
+actix-rt = "1"
+
+# Jobs runner handling
+aprun = "0.1"
