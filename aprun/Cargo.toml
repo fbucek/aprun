@@ -11,20 +11,10 @@ exclude = [".github/*"]
 
 [dependencies]
 # Common 
-dotenv = "0.15"
 tracing = "0.1"
 tracing-log = { version = "0.1", features = ["env_logger"] }
-lazy_static = "1.4"
 
-# Serialize into json and csv
-serde = { version = "1.0", features = ["derive", "rc"] }
-serde_json = "1.0"
-serde_yaml = "0.8"
-csv = "1.1" # csv with serde support
-
+# Async
 futures = "0.3"
-
-
-# async-await
-tokio = { version = "0.2", features = ["rt-threaded", "macros", "time", "sync"] }
+tokio = { version = "0.2", features = ["time", "sync"] }
 async-trait = "0.1"
