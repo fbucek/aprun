@@ -13,6 +13,9 @@ tracing-subscriber = "0.2"
 # Http
 actix-web = "2"
 actix-rt = "1"
+actix-http = "1.0"
+
+tokio = { version = "0.2", features= ["rt-threaded",  "sync"] }
 
 # Jobs runner handling
 aprun = "0.1"
