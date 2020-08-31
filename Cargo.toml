@@ -9,10 +9,6 @@ repository = "https://github.com/fbucek/aprun"
 readme = "README.md"
 exclude = [".github/*"]
 
-[lib]
-name = "serverapi"
-path = "src/lib.rs"
-
 [dependencies]
 # Common 
 dotenv = "0.15"
