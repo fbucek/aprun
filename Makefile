@@ -18,3 +18,6 @@ doc:
 
 clean: 
 	cargo clean --doc
+
+publish: all
+	cd aprun && cargo publish

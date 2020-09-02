@@ -19,6 +19,9 @@ pub use runner::{RunnerController, RunnerEvent, ServiceRunner};
 
 #[async_trait]
 pub trait ServiceTask {
+    /// To identify service task
+    fn service_name(&self) -> String;
+
     async fn run_service_check(&mut self) -> Result<(), String>;
 
     /// ServiceTasks are triggered often ( 1s interval )
