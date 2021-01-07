@@ -1,6 +1,6 @@
 [package]
 name = "aprun"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Filip Bucek <fbucek@invloop.cz>"]
 description = "Async parallel runner"
 edition = "2018"

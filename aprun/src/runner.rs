@@ -45,7 +45,7 @@ impl ServiceRunner {
     /// This should be redesigned
     async fn start(&self) {
         let wait = self.wait_time.load(Ordering::Relaxed);
-        let mut interval = tokio::time::interval(Duration::from_millis(wait));
+        let interval = Duration::from_millis(wait);
 
         loop {
             if self.stop.load(Ordering::Relaxed) {
@@ -54,23 +54,13 @@ impl ServiceRunner {
                 break;
             }
 
-            // Create interval -> first call imediatelly -> next will wait
-            interval.tick().await;
-
-            {
-                // // Write lock in separate scope -> will be destroyed when it goes out of scope
-                // let mut service_manager = self.service_manager.lock().await; // Checker write lock
-                // match service_manager.load() {
-                //     Ok(_) => info!("Service manager reloaded"),
-                //     Err(err) => error!("Checker reload error: {:?}", err),
-                // }
-            }
-
             let mut service_manager = self.service_manager.lock().await;
             service_manager
                 .async_parallel_check()
                 .await
                 .unwrap_or_else(|err| error!("Not possible to finish checks {:?}", err));
+
+            tokio::time::delay_for(interval).await;
         }
     }
 }

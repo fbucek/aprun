@@ -23,7 +23,7 @@ impl ServiceManager {
     ///
     /// 1. Creates `Vec::new with futures to run.
     /// 2. Executes futures in parallel ( finishes when the last future finishes )
-    pub async fn async_parallel_check(self: &mut Self) -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn async_parallel_check(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         // Add futures into vector
         let mut futures = Vec::new();
         for service_task in self.service_tasks.values_mut() {
