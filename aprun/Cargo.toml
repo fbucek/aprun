@@ -1,6 +1,6 @@
 [package]
 name = "aprun"
-version = "0.2.0"
+version = "0.1.5"
 authors = ["Filip Bucek <fbucek@invloop.cz>"]
 description = "Async parallel runner"
 edition = "2018"
@@ -16,5 +16,5 @@ tracing-log = { version = "0.1", features = ["env_logger"] }
 
 # Async
 futures = "0.3"
-tokio = { version = "1.16.1", features = ["rt-multi-thread", "time", "sync"] }
+tokio = { version = "0.2", features = ["rt-threaded", "time", "sync"] }
 async-trait = "0.1"

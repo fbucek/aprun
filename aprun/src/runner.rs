@@ -60,7 +60,7 @@ impl ServiceRunner {
                 .await
                 .unwrap_or_else(|err| error!("Not possible to finish checks {:?}", err));
 
-            tokio::time::sleep(interval).await;
+            tokio::time::delay_for(interval).await;
         }
     }
 }
