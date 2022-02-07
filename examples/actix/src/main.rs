@@ -41,7 +41,7 @@ async fn main() -> Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .data(control.clone())
+            .app_data(control.clone())
             .service(web::scope("/api/v1/service").service(stop).service(start))
             .service(health)
     })
@@ -59,7 +59,7 @@ async fn main() -> Result<()> {
 #[post("/stop")]
 pub async fn stop(
     control: web::Data<Arc<Mutex<aprun::RunnerController>>>,
-) -> Result<actix_http::Response, actix_web::Error> {
+) -> Result<HttpResponse, actix_web::Error> {
     let control = control.lock().await;
     trace!("Stopping runner");
     control.stop();
@@ -69,7 +69,7 @@ pub async fn stop(
 #[post("/start")]
 pub async fn start(
     control: web::Data<Arc<Mutex<aprun::RunnerController>>>,
-) -> Result<actix_http::Response, actix_web::Error> {
+) -> Result<HttpResponse, actix_web::Error> {
     let control = control.lock().await;
     trace!("Starting runner");
     control.run().await;

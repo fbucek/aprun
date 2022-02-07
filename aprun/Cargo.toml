@@ -16,5 +16,5 @@ tracing-log = { version = "0.1", features = ["env_logger"] }
 
 # Async
 futures = "0.3"
-tokio = { version = "0.3", features = ["rt", "time", "sync"] }
+tokio = { version = "1.16.1", features = ["rt-multi-thread", "time", "sync"] }
 async-trait = "0.1"
