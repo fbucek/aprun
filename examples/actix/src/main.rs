@@ -4,20 +4,21 @@ use actix_web::{get, post, web, App, HttpResponse, HttpServer};
 use std::sync::Arc;
 use tokio::sync::Mutex;
 // Error handling
-use color_eyre::Result;
+use eyre::Result;
 // Log handling
 use tracing::{info, trace};
+use tracing_subscriber::EnvFilter;
 
 #[actix_rt::main]
 async fn main() -> Result<()> {
-    color_eyre::install()?;
     std::env::set_var("RUST_LOG", "info,actix_example=trace");
 
     // Load .env file
     //dotenv::dotenv().ok();
     tracing_subscriber::fmt()
-        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env()) // load env RUST_LOG
-        .init();
+        .with_env_filter(EnvFilter::from_default_env()) // load env RUST_LOG
+        .try_init()
+        .map_err(|err| eyre::eyre!("Not possible to init subscriber: {:?}", err))?;
 
     let host = "localhost";
     let port = "8000";
