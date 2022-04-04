@@ -42,7 +42,7 @@ async fn main() -> Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .app_data(control.clone())
+            .app_data(web::Data::new(control.clone()))
             .service(web::scope("/api/v1/service").service(stop).service(start))
             .service(health)
     })
